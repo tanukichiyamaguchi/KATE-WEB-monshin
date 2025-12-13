@@ -9,7 +9,7 @@
 
 const CONFIG = {
     // Google Apps Script Web App URL - Replace with your deployed script URL
-    GOOGLE_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbwrR3VkHiWQQNhGlMfOBgysnBBM5jbpKEly0Ta9cT_vKYvcEscWKEjbk9wcUdhfLljvAA/exec',
+    GOOGLE_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbzUFTrhx2bs5ARkqsna6Je0OLdvs0qKyydExC_Q9hUwDnG9VTCXLItfmrlNg6sE_kL4/exec',
 
     // Total number of sections
     TOTAL_SECTIONS: 10,
