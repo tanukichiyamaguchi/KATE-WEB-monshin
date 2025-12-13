@@ -6,7 +6,7 @@
  */
 
 // スプレッドシートの設定
-const SPREADSHEET_ID = '1XxhyV1R1T3dc_wbtF2K1ofHeqmsCbayUYjiFqerGK1k'; // スプレッドシートIDを設定
+const SPREADSHEET_ID = '1jtexHAtYskILJC6aDk8IzJAdoiKE2YEDYzkyCYyV45M'; // スプレッドシートIDを設定
 const SHEET_NAME = '問診票データ';
 
 /**
