@@ -11,8 +11,8 @@ const CONFIG = {
     // Google Apps Script Web App URL - Replace with your deployed script URL
     GOOGLE_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbwrR3VkHiWQQNhGlMfOBgysnBBM5jbpKEly0Ta9cT_vKYvcEscWKEjbk9wcUdhfLljvAA/exec',
 
-    // Total number of sections
-    TOTAL_SECTIONS: 10,
+    // Total number of sections (reduced from 10 to 6)
+    TOTAL_SECTIONS: 6,
 
     // Date picker range
     BIRTH_YEAR_START: 1940,
@@ -45,6 +45,8 @@ const elements = {
     editBtn: document.getElementById('editBtn'),
     confirmSubmitBtn: document.getElementById('confirmSubmitBtn'),
     successModal: document.getElementById('successModal'),
+    couponModal: document.getElementById('couponModal'),
+    closeCouponBtn: document.getElementById('closeCouponBtn'),
     loadingOverlay: document.getElementById('loadingOverlay'),
     currentDateInput: document.getElementById('currentDate')
 };
@@ -62,6 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeCurrentDate();
     initializeSubmitButton();
     initializeModalButtons();
+    initializeAutoScroll();
     updateProgress();
 });
 
@@ -206,7 +209,7 @@ function initializeConditionalFields() {
     couponRadios.forEach(radio => {
         radio.addEventListener('change', function() {
             const reviewConsentField = document.getElementById('reviewConsent');
-            if (this.value === '口コミ投稿必須クーポン') {
+            if (this.value === '口コミクーポン') {
                 reviewConsentField.style.display = 'block';
             } else {
                 reviewConsentField.style.display = 'none';
@@ -222,6 +225,47 @@ function clearFieldInputs(element) {
         } else {
             input.value = '';
         }
+    });
+}
+
+// ============================================
+// Auto Scroll for Single Selection (Radio)
+// ============================================
+
+function initializeAutoScroll() {
+    // Add auto-scroll for radio buttons (single selection)
+    document.querySelectorAll('input[type="radio"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            // Don't scroll if this is in a conditional field that just appeared
+            const formGroup = this.closest('.form-group');
+            if (formGroup && formGroup.classList.contains('conditional-field')) {
+                return;
+            }
+
+            // Find the next form-group element
+            const currentFormGroup = this.closest('.form-group');
+            if (currentFormGroup) {
+                const nextFormGroup = currentFormGroup.nextElementSibling;
+
+                // Skip conditional fields that are hidden
+                let targetElement = nextFormGroup;
+                while (targetElement &&
+                       targetElement.classList.contains('conditional-field') &&
+                       targetElement.style.display === 'none') {
+                    targetElement = targetElement.nextElementSibling;
+                }
+
+                if (targetElement && !targetElement.classList.contains('button-group')) {
+                    // Delay scroll slightly for better UX
+                    setTimeout(() => {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'center'
+                        });
+                    }, 150);
+                }
+            }
+        });
     });
 }
 
@@ -262,8 +306,8 @@ function navigateToSection(sectionNumber) {
     // Scroll to top
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    // Resize signature pad if on section 10
-    if (sectionNumber === 10 && signaturePad) {
+    // Resize signature pad if on section 6 (now the last section with signature)
+    if (sectionNumber === 6 && signaturePad) {
         setTimeout(resizeSignatureCanvas, 100);
     }
 }
@@ -316,10 +360,9 @@ function validateCurrentSection() {
     });
 
     // Validate required checkbox groups (at least one must be checked)
-    const checkboxGroups = ['howFound', 'visitReason', 'eyeHistory', 'allergies',
-                           'pastTroubles', 'skinCondition', 'cosmeticHistory',
-                           'eyeSymptoms', 'lashCondition', 'browCondition',
-                           'desiredMenu', 'priorities', 'pastIssues'];
+    const checkboxGroups = ['howFound', 'visitReason', 'allergies', 'skinCondition',
+                           'eyeSymptoms', 'lashCondition', 'pastTroubles',
+                           'desiredMenu', 'priorities'];
 
     checkboxGroups.forEach(groupName => {
         const checkboxes = section.querySelectorAll(`input[type="checkbox"][name="${groupName}"]`);
@@ -332,8 +375,8 @@ function validateCurrentSection() {
         }
     });
 
-    // Validate consent checkboxes in section 9
-    if (currentSection === 9) {
+    // Validate consent checkboxes in section 6
+    if (currentSection === 6) {
         const consentCheckboxes = ['treatmentConsent', 'aftercareConsent', 'privacyConsent'];
         consentCheckboxes.forEach(name => {
             const checkbox = section.querySelector(`input[name="${name}"]`);
@@ -345,17 +388,15 @@ function validateCurrentSection() {
 
         // Check review consent if coupon type is review required
         const couponType = document.querySelector('input[name="couponType"]:checked');
-        if (couponType && couponType.value === '口コミ投稿必須クーポン') {
+        if (couponType && couponType.value === '口コミクーポン') {
             const reviewConsent = section.querySelector('input[name="reviewConsentCheck"]');
             if (reviewConsent && !reviewConsent.checked) {
                 markFieldAsError(reviewConsent);
                 isValid = false;
             }
         }
-    }
 
-    // Validate signature in section 10
-    if (currentSection === 10) {
+        // Validate signature
         if (!elements.signatureData.value) {
             alert('署名をご記入ください');
             isValid = false;
@@ -549,6 +590,17 @@ function initializeModalButtons() {
             this.classList.remove('active');
         }
     });
+
+    // Coupon modal close button
+    if (elements.closeCouponBtn) {
+        elements.closeCouponBtn.addEventListener('click', function() {
+            elements.couponModal.classList.remove('active');
+            // Reset form after closing coupon
+            setTimeout(() => {
+                location.reload();
+            }, 500);
+        });
+    }
 }
 
 function showConfirmationModal() {
@@ -618,47 +670,29 @@ function generateConfirmationHTML(data) {
             ]
         },
         {
-            title: '来店経路・動機',
+            title: '来店経路・ライフスタイル',
             fields: [
                 { key: 'howFound', label: '当店を知った経路' },
                 { key: 'referrerName', label: '紹介者' },
-                { key: 'howFoundOther', label: 'その他詳細' },
-                { key: 'visitReason', label: '来店動機' }
-            ]
-        },
-        {
-            title: 'ライフスタイル',
-            fields: [
+                { key: 'visitReason', label: '来店動機' },
                 { key: 'occupation', label: 'ご職業' },
                 { key: 'makeupFrequency', label: 'メイク頻度' },
                 { key: 'eyeMakeup', label: '目元メイク' },
                 { key: 'sleepPosition', label: '就寝時の姿勢' },
-                { key: 'exerciseFrequency', label: '運動頻度' },
                 { key: 'oilCleansing', label: 'オイルクレンジング' }
             ]
         },
         {
-            title: '健康状態',
+            title: '健康状態・目元の状態',
             fields: [
                 { key: 'eyeClinic', label: '眼科通院' },
-                { key: 'eyeClinicCondition', label: '通院中の病名' },
-                { key: 'eyeHistory', label: '目の病気の既往歴' },
+                { key: 'eyeClinicCondition', label: '病名・症状' },
                 { key: 'allergies', label: 'アレルギー' },
-                { key: 'pastTroubles', label: '施術トラブル経験' },
-                { key: 'medication', label: '服用中の薬' },
-                { key: 'medicationDetails', label: '薬名' },
                 { key: 'skinCondition', label: '皮膚疾患' },
                 { key: 'pregnancy', label: '妊娠・授乳' },
-                { key: 'cosmeticHistory', label: '美容医療施術歴' }
-            ]
-        },
-        {
-            title: '目元の状態',
-            fields: [
                 { key: 'contactLens', label: 'コンタクトレンズ' },
                 { key: 'eyeSymptoms', label: '目元の症状' },
-                { key: 'lashCondition', label: 'まつ毛の状態' },
-                { key: 'browCondition', label: '眉毛の状態' }
+                { key: 'lashCondition', label: 'まつ毛の状態' }
             ]
         },
         {
@@ -666,31 +700,27 @@ function generateConfirmationHTML(data) {
             fields: [
                 { key: 'lashExtExperience', label: 'エクステ経験' },
                 { key: 'lashExtLastTime', label: 'エクステ最終時期' },
-                { key: 'remainingExt', label: '残りエクステ' },
                 { key: 'lashPermExperience', label: 'パーマ経験' },
                 { key: 'lashPermLastTime', label: 'パーマ最終時期' },
                 { key: 'browSalonExperience', label: '眉サロン経験' },
-                { key: 'browWaxExperience', label: 'ワックス経験' },
-                { key: 'browWaxLastTime', label: 'ワックス最終時期' },
-                { key: 'pastIssues', label: '過去のトラブル' }
+                { key: 'pastTroubles', label: '過去のトラブル' }
             ]
         },
         {
-            title: 'ご希望',
+            title: 'ご希望・クーポン',
             fields: [
                 { key: 'desiredMenu', label: '希望メニュー' },
                 { key: 'lashStyle', label: 'まつ毛イメージ' },
                 { key: 'browStyle', label: '眉毛イメージ' },
                 { key: 'priorities', label: '重視ポイント' },
-                { key: 'referencePhoto', label: '参考写真' },
-                { key: 'visitFrequency', label: '来店ペース' }
+                { key: 'visitFrequency', label: '来店ペース' },
+                { key: 'couponType', label: 'クーポン種別' },
+                { key: 'couponName', label: 'クーポン名' }
             ]
         },
         {
-            title: 'クーポン・同意',
+            title: '同意事項',
             fields: [
-                { key: 'couponType', label: 'クーポン種別' },
-                { key: 'couponName', label: 'クーポン名' },
                 { key: 'snsConsent', label: 'SNS掲載' }
             ]
         }
@@ -726,6 +756,90 @@ function escapeHtml(text) {
     return div.innerHTML;
 }
 
+// ============================================
+// PDF Generation
+// ============================================
+
+function generatePDF(formData) {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    // Add Japanese font support (using built-in)
+    doc.setFont('helvetica');
+
+    // Title
+    doc.setFontSize(18);
+    doc.text('KATEstageLASH Web問診票', 105, 20, { align: 'center' });
+
+    doc.setFontSize(10);
+    doc.text(`作成日: ${formData.date || new Date().toLocaleDateString('ja-JP')}`, 105, 28, { align: 'center' });
+
+    let yPosition = 40;
+    const lineHeight = 7;
+    const pageHeight = 280;
+
+    const sections = [
+        { title: '基本情報', fields: ['name', 'furigana', 'birthDate', 'phone', 'email'] },
+        { title: '来店経路・ライフスタイル', fields: ['howFound', 'visitReason', 'occupation', 'makeupFrequency', 'eyeMakeup', 'sleepPosition', 'oilCleansing'] },
+        { title: '健康状態・目元の状態', fields: ['eyeClinic', 'allergies', 'skinCondition', 'pregnancy', 'contactLens', 'eyeSymptoms', 'lashCondition'] },
+        { title: '施術歴', fields: ['lashExtExperience', 'lashPermExperience', 'browSalonExperience', 'pastTroubles'] },
+        { title: 'ご希望・クーポン', fields: ['desiredMenu', 'lashStyle', 'browStyle', 'priorities', 'visitFrequency', 'couponType'] },
+        { title: '同意事項', fields: ['snsConsent', 'treatmentConsent', 'aftercareConsent', 'privacyConsent'] }
+    ];
+
+    const fieldLabels = {
+        name: 'お名前', furigana: 'フリガナ', birthDate: '生年月日', phone: '電話番号', email: 'メールアドレス',
+        howFound: '当店を知った経路', visitReason: '来店動機', occupation: 'ご職業', makeupFrequency: 'メイク頻度',
+        eyeMakeup: '目元メイク', sleepPosition: '就寝時の姿勢', oilCleansing: 'オイルクレンジング',
+        eyeClinic: '眼科通院', allergies: 'アレルギー', skinCondition: '皮膚疾患', pregnancy: '妊娠・授乳',
+        contactLens: 'コンタクトレンズ', eyeSymptoms: '目元の症状', lashCondition: 'まつ毛の状態',
+        lashExtExperience: 'エクステ経験', lashPermExperience: 'パーマ経験', browSalonExperience: '眉サロン経験',
+        pastTroubles: '過去のトラブル', desiredMenu: '希望メニュー', lashStyle: 'まつ毛イメージ',
+        browStyle: '眉毛イメージ', priorities: '重視ポイント', visitFrequency: '来店ペース',
+        couponType: 'クーポン種別', snsConsent: 'SNS掲載', treatmentConsent: '施術同意',
+        aftercareConsent: 'アフターケア同意', privacyConsent: '個人情報同意'
+    };
+
+    sections.forEach(section => {
+        // Check if we need a new page
+        if (yPosition > pageHeight - 30) {
+            doc.addPage();
+            yPosition = 20;
+        }
+
+        // Section title
+        doc.setFontSize(12);
+        doc.setFont('helvetica', 'bold');
+        doc.text(section.title, 15, yPosition);
+        yPosition += lineHeight;
+
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'normal');
+
+        section.fields.forEach(field => {
+            if (formData[field]) {
+                if (yPosition > pageHeight - 10) {
+                    doc.addPage();
+                    yPosition = 20;
+                }
+
+                const label = fieldLabels[field] || field;
+                const value = String(formData[field]).substring(0, 60); // Truncate long values
+                doc.text(`${label}: ${value}`, 20, yPosition);
+                yPosition += lineHeight;
+            }
+        });
+
+        yPosition += 5; // Space between sections
+    });
+
+    return doc.output('blob');
+}
+
+// ============================================
+// Form Submit with PDF
+// ============================================
+
 async function submitForm() {
     elements.confirmationModal.classList.remove('active');
     elements.loadingOverlay.classList.add('active');
@@ -734,6 +848,22 @@ async function submitForm() {
 
     // Add timestamp
     formData.timestamp = new Date().toISOString();
+
+    // Generate PDF blob
+    let pdfBlob = null;
+    try {
+        pdfBlob = generatePDF(formData);
+        // Convert blob to base64
+        const reader = new FileReader();
+        const pdfBase64 = await new Promise((resolve, reject) => {
+            reader.onload = () => resolve(reader.result.split(',')[1]);
+            reader.onerror = reject;
+            reader.readAsDataURL(pdfBlob);
+        });
+        formData.pdfData = pdfBase64;
+    } catch (pdfError) {
+        console.warn('PDF generation failed:', pdfError);
+    }
 
     try {
         const response = await fetch(CONFIG.GOOGLE_SCRIPT_URL, {
@@ -748,12 +878,16 @@ async function submitForm() {
         // Since we're using no-cors, we can't read the response
         // Assume success if no error is thrown
         elements.loadingOverlay.classList.remove('active');
-        elements.successModal.classList.add('active');
 
-        // Reset form after 3 seconds
-        setTimeout(() => {
-            location.reload();
-        }, 5000);
+        // Show coupon modal instead of success modal
+        if (elements.couponModal) {
+            elements.couponModal.classList.add('active');
+        } else {
+            elements.successModal.classList.add('active');
+            setTimeout(() => {
+                location.reload();
+            }, 5000);
+        }
 
     } catch (error) {
         console.error('Submission error:', error);

@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -24,7 +25,7 @@
                 <div class="progress-fill" id="progressFill"></div>
             </div>
             <div class="progress-text">
-                <span id="currentSection">1</span> / <span id="totalSections">10</span>
+                <span id="currentSection">1</span> / <span id="totalSections">6</span>
             </div>
         </div>
 
@@ -78,11 +79,11 @@
                 </div>
             </section>
 
-            <!-- Section 2: How did you find us -->
+            <!-- Section 2: How did you find us & Lifestyle (Combined) -->
             <section class="form-section" data-section="2">
                 <div class="section-header">
                     <span class="section-number">02</span>
-                    <h2 class="section-title">当店を知った経路・来店動機</h2>
+                    <h2 class="section-title">来店経路・ライフスタイル</h2>
                 </div>
 
                 <div class="form-group">
@@ -94,24 +95,14 @@
                             <span class="checkbox-label">HotpepperBeauty</span>
                         </label>
                         <label class="checkbox-item">
-                            <input type="checkbox" name="howFound" value="Instagram（投稿）">
+                            <input type="checkbox" name="howFound" value="Instagram">
                             <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">Instagram（投稿）</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="howFound" value="Instagram（広告）">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">Instagram（広告）</span>
+                            <span class="checkbox-label">Instagram</span>
                         </label>
                         <label class="checkbox-item">
                             <input type="checkbox" name="howFound" value="GoogleMAP">
                             <span class="checkbox-custom"></span>
                             <span class="checkbox-label">GoogleMAP</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="howFound" value="Threads">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">Threads</span>
                         </label>
                         <label class="checkbox-item">
                             <input type="checkbox" name="howFound" value="看板">
@@ -124,14 +115,9 @@
                             <span class="checkbox-label">紹介</span>
                         </label>
                         <label class="checkbox-item">
-                            <input type="checkbox" name="howFound" value="その他" data-toggle="howFoundOther">
+                            <input type="checkbox" name="howFound" value="その他">
                             <span class="checkbox-custom"></span>
                             <span class="checkbox-label">その他</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="howFound" value="覚えていない">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">覚えていない</span>
                         </label>
                     </div>
                 </div>
@@ -141,78 +127,40 @@
                     <input type="text" name="referrerName" class="form-input" placeholder="ご紹介者のお名前">
                 </div>
 
-                <div class="form-group conditional-field" id="howFoundOther" style="display: none;">
-                    <label class="form-label">その他（具体的に）</label>
-                    <input type="text" name="howFoundOther" class="form-input" placeholder="具体的にご記入ください">
-                </div>
-
                 <div class="form-group">
-                    <label class="form-label required">本日のご来店動機は？（複数選択可）</label>
+                    <label class="form-label required">本日のご来店動機（複数選択可）</label>
                     <div class="checkbox-group">
                         <label class="checkbox-item">
-                            <input type="checkbox" name="visitReason" value="イベント・特別な予定がある">
+                            <input type="checkbox" name="visitReason" value="イベント・予定">
                             <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">イベント・特別な予定がある</span>
+                            <span class="checkbox-label">イベント・予定</span>
                         </label>
                         <label class="checkbox-item">
-                            <input type="checkbox" name="visitReason" value="定期的なメンテナンスとして">
+                            <input type="checkbox" name="visitReason" value="定期メンテナンス">
                             <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">定期的なメンテナンスとして</span>
+                            <span class="checkbox-label">定期メンテナンス</span>
                         </label>
                         <label class="checkbox-item">
-                            <input type="checkbox" name="visitReason" value="初めて施術を試してみたい">
+                            <input type="checkbox" name="visitReason" value="初めて試したい">
                             <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">初めて施術を試してみたい</span>
+                            <span class="checkbox-label">初めて試したい</span>
                         </label>
                         <label class="checkbox-item">
-                            <input type="checkbox" name="visitReason" value="他店からの乗り換え">
+                            <input type="checkbox" name="visitReason" value="他店から乗り換え">
                             <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">他店からの乗り換え</span>
+                            <span class="checkbox-label">他店から乗り換え</span>
                         </label>
                         <label class="checkbox-item">
-                            <input type="checkbox" name="visitReason" value="SNSの投稿を見て">
+                            <input type="checkbox" name="visitReason" value="SNSを見て">
                             <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">SNSの投稿を見て</span>
+                            <span class="checkbox-label">SNSを見て</span>
                         </label>
                         <label class="checkbox-item">
-                            <input type="checkbox" name="visitReason" value="口コミ・評判が良かった">
+                            <input type="checkbox" name="visitReason" value="口コミ・評判">
                             <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">口コミ・評判が良かった</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="visitReason" value="価格・クーポンに惹かれた">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">価格・クーポンに惹かれた</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="visitReason" value="自宅・職場から近い">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">自宅・職場から近い</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="visitReason" value="友人・知人のすすめ">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">友人・知人のすすめ</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="visitReason" value="特に理由はない">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">特に理由はない</span>
+                            <span class="checkbox-label">口コミ・評判</span>
                         </label>
                     </div>
-                </div>
-
-                <div class="button-group">
-                    <button type="button" class="btn btn-prev" data-prev="1">戻る</button>
-                    <button type="button" class="btn btn-next" data-next="3">次へ</button>
-                </div>
-            </section>
-
-            <!-- Section 3: Lifestyle -->
-            <section class="form-section" data-section="3">
-                <div class="section-header">
-                    <span class="section-number">03</span>
-                    <h2 class="section-title">ライフスタイル</h2>
                 </div>
 
                 <div class="form-group">
@@ -224,13 +172,10 @@
                         <option value="医療・福祉関係">医療・福祉関係</option>
                         <option value="美容・アパレル関係">美容・アパレル関係</option>
                         <option value="飲食・サービス業">飲食・サービス業</option>
-                        <option value="教育関係">教育関係</option>
-                        <option value="公務員">公務員</option>
                         <option value="自営業・フリーランス">自営業・フリーランス</option>
                         <option value="専業主婦・主夫">専業主婦・主夫</option>
                         <option value="学生">学生</option>
                         <option value="その他">その他</option>
-                        <option value="回答しない">回答しない</option>
                     </select>
                 </div>
 
@@ -243,24 +188,19 @@
                             <span class="radio-label">毎日</span>
                         </label>
                         <label class="radio-item">
-                            <input type="radio" name="makeupFrequency" value="週3〜5回程度">
+                            <input type="radio" name="makeupFrequency" value="週3〜5回">
                             <span class="radio-custom"></span>
-                            <span class="radio-label">週3〜5回程度</span>
+                            <span class="radio-label">週3〜5回</span>
                         </label>
                         <label class="radio-item">
-                            <input type="radio" name="makeupFrequency" value="週1〜2回程度">
+                            <input type="radio" name="makeupFrequency" value="週1〜2回">
                             <span class="radio-custom"></span>
-                            <span class="radio-label">週1〜2回程度</span>
+                            <span class="radio-label">週1〜2回</span>
                         </label>
                         <label class="radio-item">
-                            <input type="radio" name="makeupFrequency" value="ほとんどしない">
+                            <input type="radio" name="makeupFrequency" value="ほぼしない">
                             <span class="radio-custom"></span>
-                            <span class="radio-label">ほとんどしない</span>
-                        </label>
-                        <label class="radio-item">
-                            <input type="radio" name="makeupFrequency" value="わからない">
-                            <span class="radio-custom"></span>
-                            <span class="radio-label">わからない</span>
+                            <span class="radio-label">ほぼしない</span>
                         </label>
                     </div>
                 </div>
@@ -279,24 +219,14 @@
                             <span class="radio-label">しっかりメイク</span>
                         </label>
                         <label class="radio-item">
-                            <input type="radio" name="eyeMakeup" value="つけまつ毛を使用">
+                            <input type="radio" name="eyeMakeup" value="つけまつ毛">
                             <span class="radio-custom"></span>
-                            <span class="radio-label">つけまつ毛を使用</span>
-                        </label>
-                        <label class="radio-item">
-                            <input type="radio" name="eyeMakeup" value="アイラインのみ">
-                            <span class="radio-custom"></span>
-                            <span class="radio-label">アイラインのみ</span>
+                            <span class="radio-label">つけまつ毛</span>
                         </label>
                         <label class="radio-item">
                             <input type="radio" name="eyeMakeup" value="ほぼしない">
                             <span class="radio-custom"></span>
                             <span class="radio-label">ほぼしない</span>
-                        </label>
-                        <label class="radio-item">
-                            <input type="radio" name="eyeMakeup" value="わからない">
-                            <span class="radio-custom"></span>
-                            <span class="radio-label">わからない</span>
                         </label>
                     </div>
                 </div>
@@ -324,42 +254,6 @@
                             <span class="radio-custom"></span>
                             <span class="radio-label">決まっていない</span>
                         </label>
-                        <label class="radio-item">
-                            <input type="radio" name="sleepPosition" value="わからない">
-                            <span class="radio-custom"></span>
-                            <span class="radio-label">わからない</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label required">運動・サウナ・プールの頻度</label>
-                    <div class="radio-group">
-                        <label class="radio-item">
-                            <input type="radio" name="exerciseFrequency" value="週3回以上" required>
-                            <span class="radio-custom"></span>
-                            <span class="radio-label">週3回以上</span>
-                        </label>
-                        <label class="radio-item">
-                            <input type="radio" name="exerciseFrequency" value="週1〜2回">
-                            <span class="radio-custom"></span>
-                            <span class="radio-label">週1〜2回</span>
-                        </label>
-                        <label class="radio-item">
-                            <input type="radio" name="exerciseFrequency" value="月数回程度">
-                            <span class="radio-custom"></span>
-                            <span class="radio-label">月数回程度</span>
-                        </label>
-                        <label class="radio-item">
-                            <input type="radio" name="exerciseFrequency" value="ほとんどしない">
-                            <span class="radio-custom"></span>
-                            <span class="radio-label">ほとんどしない</span>
-                        </label>
-                        <label class="radio-item">
-                            <input type="radio" name="exerciseFrequency" value="わからない">
-                            <span class="radio-custom"></span>
-                            <span class="radio-label">わからない</span>
-                        </label>
                     </div>
                 </div>
 
@@ -376,29 +270,24 @@
                             <span class="radio-custom"></span>
                             <span class="radio-label">使用していない</span>
                         </label>
-                        <label class="radio-item">
-                            <input type="radio" name="oilCleansing" value="わからない">
-                            <span class="radio-custom"></span>
-                            <span class="radio-label">わからない</span>
-                        </label>
                     </div>
                 </div>
 
                 <div class="button-group">
-                    <button type="button" class="btn btn-prev" data-prev="2">戻る</button>
-                    <button type="button" class="btn btn-next" data-next="4">次へ</button>
+                    <button type="button" class="btn btn-prev" data-prev="1">戻る</button>
+                    <button type="button" class="btn btn-next" data-next="3">次へ</button>
                 </div>
             </section>
 
-            <!-- Section 4: Health & Allergies -->
-            <section class="form-section" data-section="4">
+            <!-- Section 3: Health & Eye Condition (Combined) -->
+            <section class="form-section" data-section="3">
                 <div class="section-header">
-                    <span class="section-number">04</span>
-                    <h2 class="section-title">健康状態・アレルギー歴</h2>
+                    <span class="section-number">03</span>
+                    <h2 class="section-title">健康状態・目元の状態</h2>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label required">現在、眼科に通院中ですか？</label>
+                    <label class="form-label required">眼科に通院中ですか？</label>
                     <div class="radio-group">
                         <label class="radio-item">
                             <input type="radio" name="eyeClinic" value="はい" data-toggle="eyeClinicDetails" required>
@@ -410,116 +299,26 @@
                             <span class="radio-custom"></span>
                             <span class="radio-label">いいえ</span>
                         </label>
-                        <label class="radio-item">
-                            <input type="radio" name="eyeClinic" value="わからない">
-                            <span class="radio-custom"></span>
-                            <span class="radio-label">わからない</span>
-                        </label>
                     </div>
                 </div>
 
                 <div class="form-group conditional-field" id="eyeClinicDetails" style="display: none;">
-                    <label class="form-label">病名・症状（複数選択可）</label>
-                    <div class="checkbox-group">
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="eyeClinicCondition" value="結膜炎">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">結膜炎</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="eyeClinicCondition" value="ものもらい">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">ものもらい</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="eyeClinicCondition" value="ドライアイ">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">ドライアイ</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="eyeClinicCondition" value="緑内障">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">緑内障</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="eyeClinicCondition" value="白内障">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">白内障</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="eyeClinicCondition" value="その他" data-toggle="eyeClinicOther">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">その他</span>
-                        </label>
-                    </div>
-                    <div class="form-group conditional-field" id="eyeClinicOther" style="display: none; margin-top: 12px;">
-                        <input type="text" name="eyeClinicOther" class="form-input" placeholder="その他の病名・症状">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label required">目の病気の既往歴（複数選択可）</label>
-                    <div class="checkbox-group">
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="eyeHistory" value="結膜炎">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">結膜炎</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="eyeHistory" value="ものもらい">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">ものもらい</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="eyeHistory" value="ドライアイ">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">ドライアイ</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="eyeHistory" value="緑内障">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">緑内障</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="eyeHistory" value="白内障">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">白内障</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="eyeHistory" value="その他" data-toggle="eyeHistoryOther">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">その他</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="eyeHistory" value="特になし">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">特になし</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="eyeHistory" value="わからない">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">わからない</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="form-group conditional-field" id="eyeHistoryOther" style="display: none;">
-                    <label class="form-label">その他（具体的に）</label>
-                    <input type="text" name="eyeHistoryOther" class="form-input" placeholder="具体的にご記入ください">
+                    <label class="form-label">病名・症状</label>
+                    <input type="text" name="eyeClinicCondition" class="form-input" placeholder="病名・症状をご記入ください">
                 </div>
 
                 <div class="form-group">
                     <label class="form-label required">アレルギーの有無（複数選択可）</label>
                     <div class="checkbox-group">
                         <label class="checkbox-item">
-                            <input type="checkbox" name="allergies" value="金属アレルギー">
+                            <input type="checkbox" name="allergies" value="金属">
                             <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">金属アレルギー</span>
+                            <span class="checkbox-label">金属</span>
                         </label>
                         <label class="checkbox-item">
-                            <input type="checkbox" name="allergies" value="ラテックス（ゴム）">
+                            <input type="checkbox" name="allergies" value="ゴム">
                             <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">ラテックス（ゴム）</span>
+                            <span class="checkbox-label">ゴム</span>
                         </label>
                         <label class="checkbox-item">
                             <input type="checkbox" name="allergies" value="花粉症">
@@ -532,107 +331,25 @@
                             <span class="checkbox-label">化粧品</span>
                         </label>
                         <label class="checkbox-item">
-                            <input type="checkbox" name="allergies" value="食物アレルギー">
+                            <input type="checkbox" name="allergies" value="食物">
                             <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">食物アレルギー</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="allergies" value="その他" data-toggle="allergiesOther">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">その他</span>
+                            <span class="checkbox-label">食物</span>
                         </label>
                         <label class="checkbox-item">
                             <input type="checkbox" name="allergies" value="特になし">
                             <span class="checkbox-custom"></span>
                             <span class="checkbox-label">特になし</span>
                         </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="allergies" value="わからない">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">わからない</span>
-                        </label>
                     </div>
-                </div>
-
-                <div class="form-group conditional-field" id="allergiesOther" style="display: none;">
-                    <label class="form-label">その他（具体的に）</label>
-                    <input type="text" name="allergiesOther" class="form-input" placeholder="具体的にご記入ください">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label required">過去のまつ毛・眉毛施術でのトラブル経験（複数選択可）</label>
-                    <div class="checkbox-group">
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="pastTroubles" value="かぶれ・赤み">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">かぶれ・赤み</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="pastTroubles" value="腫れ">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">腫れ</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="pastTroubles" value="かゆみ">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">かゆみ</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="pastTroubles" value="痛み">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">痛み</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="pastTroubles" value="その他">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">その他</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="pastTroubles" value="特になし">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">特になし</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="pastTroubles" value="わからない・覚えていない">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">わからない・覚えていない</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label required">現在服用中のお薬</label>
-                    <div class="radio-group">
-                        <label class="radio-item">
-                            <input type="radio" name="medication" value="あり" data-toggle="medicationDetails" required>
-                            <span class="radio-custom"></span>
-                            <span class="radio-label">あり</span>
-                        </label>
-                        <label class="radio-item">
-                            <input type="radio" name="medication" value="なし">
-                            <span class="radio-custom"></span>
-                            <span class="radio-label">なし</span>
-                        </label>
-                        <label class="radio-item">
-                            <input type="radio" name="medication" value="わからない">
-                            <span class="radio-custom"></span>
-                            <span class="radio-label">わからない</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="form-group conditional-field" id="medicationDetails" style="display: none;">
-                    <label class="form-label">薬名（わかる範囲で）</label>
-                    <input type="text" name="medicationDetails" class="form-input" placeholder="お薬の名前をご記入ください">
                 </div>
 
                 <div class="form-group">
                     <label class="form-label required">皮膚疾患の有無（複数選択可）</label>
                     <div class="checkbox-group">
                         <label class="checkbox-item">
-                            <input type="checkbox" name="skinCondition" value="アトピー性皮膚炎">
+                            <input type="checkbox" name="skinCondition" value="アトピー">
                             <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">アトピー性皮膚炎</span>
+                            <span class="checkbox-label">アトピー</span>
                         </label>
                         <label class="checkbox-item">
                             <input type="checkbox" name="skinCondition" value="敏感肌">
@@ -645,19 +362,9 @@
                             <span class="checkbox-label">接触性皮膚炎</span>
                         </label>
                         <label class="checkbox-item">
-                            <input type="checkbox" name="skinCondition" value="その他">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">その他</span>
-                        </label>
-                        <label class="checkbox-item">
                             <input type="checkbox" name="skinCondition" value="特になし">
                             <span class="checkbox-custom"></span>
                             <span class="checkbox-label">特になし</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="skinCondition" value="わからない">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">わからない</span>
                         </label>
                     </div>
                 </div>
@@ -689,87 +396,33 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label required">過去3ヶ月以内の美容医療施術歴（複数選択可）</label>
-                    <div class="checkbox-group">
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="cosmeticHistory" value="目元の整形">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">目元の整形</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="cosmeticHistory" value="ボトックス">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">ボトックス</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="cosmeticHistory" value="ヒアルロン酸注入">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">ヒアルロン酸注入</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="cosmeticHistory" value="その他">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">その他</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="cosmeticHistory" value="特になし">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">特になし</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="cosmeticHistory" value="わからない・覚えていない">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">わからない・覚えていない</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="button-group">
-                    <button type="button" class="btn btn-prev" data-prev="3">戻る</button>
-                    <button type="button" class="btn btn-next" data-next="5">次へ</button>
-                </div>
-            </section>
-
-            <!-- Section 5: Current Eye Condition -->
-            <section class="form-section" data-section="5">
-                <div class="section-header">
-                    <span class="section-number">05</span>
-                    <h2 class="section-title">目元の現在の状態</h2>
-                </div>
-
-                <div class="form-group">
                     <label class="form-label required">コンタクトレンズの使用</label>
                     <div class="radio-group">
                         <label class="radio-item">
-                            <input type="radio" name="contactLens" value="ソフトコンタクト" required>
+                            <input type="radio" name="contactLens" value="ソフト" required>
                             <span class="radio-custom"></span>
-                            <span class="radio-label">ソフトコンタクト</span>
+                            <span class="radio-label">ソフト</span>
                         </label>
                         <label class="radio-item">
-                            <input type="radio" name="contactLens" value="ハードコンタクト">
+                            <input type="radio" name="contactLens" value="ハード">
                             <span class="radio-custom"></span>
-                            <span class="radio-label">ハードコンタクト</span>
+                            <span class="radio-label">ハード</span>
                         </label>
                         <label class="radio-item">
-                            <input type="radio" name="contactLens" value="カラーコンタクト">
+                            <input type="radio" name="contactLens" value="カラコン">
                             <span class="radio-custom"></span>
-                            <span class="radio-label">カラーコンタクト</span>
+                            <span class="radio-label">カラコン</span>
                         </label>
                         <label class="radio-item">
                             <input type="radio" name="contactLens" value="使用していない">
                             <span class="radio-custom"></span>
                             <span class="radio-label">使用していない</span>
                         </label>
-                        <label class="radio-item">
-                            <input type="radio" name="contactLens" value="わからない">
-                            <span class="radio-custom"></span>
-                            <span class="radio-label">わからない</span>
-                        </label>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label required">現在の目元の気になる症状（複数選択可）</label>
+                    <label class="form-label required">目元の気になる症状（複数選択可）</label>
                     <div class="checkbox-group">
                         <label class="checkbox-item">
                             <input type="checkbox" name="eyeSymptoms" value="かゆみ">
@@ -792,19 +445,9 @@
                             <span class="checkbox-label">違和感</span>
                         </label>
                         <label class="checkbox-item">
-                            <input type="checkbox" name="eyeSymptoms" value="その他">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">その他</span>
-                        </label>
-                        <label class="checkbox-item">
                             <input type="checkbox" name="eyeSymptoms" value="特になし">
                             <span class="checkbox-custom"></span>
                             <span class="checkbox-label">特になし</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="eyeSymptoms" value="わからない">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">わからない</span>
                         </label>
                     </div>
                 </div>
@@ -833,69 +476,28 @@
                             <span class="checkbox-label">短い</span>
                         </label>
                         <label class="checkbox-item">
-                            <input type="checkbox" name="lashCondition" value="下向きに生えている">
+                            <input type="checkbox" name="lashCondition" value="下向き">
                             <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">下向きに生えている</span>
+                            <span class="checkbox-label">下向き</span>
                         </label>
                         <label class="checkbox-item">
-                            <input type="checkbox" name="lashCondition" value="特に気にならない">
+                            <input type="checkbox" name="lashCondition" value="気にならない">
                             <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">特に気にならない</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="lashCondition" value="わからない">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">わからない</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label required">眉毛の状態（複数選択可）</label>
-                    <div class="checkbox-group">
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="browCondition" value="薄い">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">薄い</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="browCondition" value="まばら">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">まばら</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="browCondition" value="左右差がある">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">左右差がある</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="browCondition" value="生え癖がある">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">生え癖がある</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="browCondition" value="特に気にならない">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">特に気にならない</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="browCondition" value="わからない">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">わからない</span>
+                            <span class="checkbox-label">気にならない</span>
                         </label>
                     </div>
                 </div>
 
                 <div class="button-group">
-                    <button type="button" class="btn btn-prev" data-prev="4">戻る</button>
-                    <button type="button" class="btn btn-next" data-next="6">次へ</button>
+                    <button type="button" class="btn btn-prev" data-prev="2">戻る</button>
+                    <button type="button" class="btn btn-next" data-next="4">次へ</button>
                 </div>
             </section>
 
-            <!-- Section 6: Treatment History -->
-            <section class="form-section" data-section="6">
+            <!-- Section 4: Treatment History -->
+            <section class="form-section" data-section="4">
                 <div class="section-header">
-                    <span class="section-number">06</span>
+                    <span class="section-number">04</span>
                     <h2 class="section-title">施術歴・経験</h2>
                 </div>
 
@@ -908,58 +510,32 @@
                             <span class="radio-label">初めて</span>
                         </label>
                         <label class="radio-item">
-                            <input type="radio" name="lashExtExperience" value="1〜2回程度" data-toggle="lashExtDetails">
+                            <input type="radio" name="lashExtExperience" value="1〜2回" data-toggle="lashExtDetails">
                             <span class="radio-custom"></span>
-                            <span class="radio-label">1〜2回程度</span>
+                            <span class="radio-label">1〜2回</span>
                         </label>
                         <label class="radio-item">
-                            <input type="radio" name="lashExtExperience" value="定期的に通っている" data-toggle="lashExtDetails">
+                            <input type="radio" name="lashExtExperience" value="定期的" data-toggle="lashExtDetails">
                             <span class="radio-custom"></span>
-                            <span class="radio-label">定期的に通っている</span>
+                            <span class="radio-label">定期的</span>
                         </label>
                         <label class="radio-item">
-                            <input type="radio" name="lashExtExperience" value="以前通っていたが今は通っていない" data-toggle="lashExtDetails">
+                            <input type="radio" name="lashExtExperience" value="以前のみ" data-toggle="lashExtDetails">
                             <span class="radio-custom"></span>
-                            <span class="radio-label">以前通っていたが今は通っていない</span>
-                        </label>
-                        <label class="radio-item">
-                            <input type="radio" name="lashExtExperience" value="わからない・覚えていない">
-                            <span class="radio-custom"></span>
-                            <span class="radio-label">わからない・覚えていない</span>
+                            <span class="radio-label">以前のみ</span>
                         </label>
                     </div>
                 </div>
 
                 <div class="form-group conditional-field" id="lashExtDetails" style="display: none;">
-                    <label class="form-label">最後にまつ毛エクステをした時期</label>
+                    <label class="form-label">最後の施術時期</label>
                     <select name="lashExtLastTime" class="form-select">
                         <option value="">選択してください</option>
                         <option value="1ヶ月以内">1ヶ月以内</option>
                         <option value="1〜3ヶ月前">1〜3ヶ月前</option>
                         <option value="3ヶ月〜半年前">3ヶ月〜半年前</option>
-                        <option value="半年〜1年前">半年〜1年前</option>
-                        <option value="1年以上前">1年以上前</option>
-                        <option value="わからない・覚えていない">わからない・覚えていない</option>
+                        <option value="半年以上前">半年以上前</option>
                     </select>
-
-                    <label class="form-label" style="margin-top: 16px;">現在残っているエクステの有無</label>
-                    <div class="radio-group">
-                        <label class="radio-item">
-                            <input type="radio" name="remainingExt" value="あり">
-                            <span class="radio-custom"></span>
-                            <span class="radio-label">あり</span>
-                        </label>
-                        <label class="radio-item">
-                            <input type="radio" name="remainingExt" value="なし">
-                            <span class="radio-custom"></span>
-                            <span class="radio-label">なし</span>
-                        </label>
-                        <label class="radio-item">
-                            <input type="radio" name="remainingExt" value="わからない">
-                            <span class="radio-custom"></span>
-                            <span class="radio-label">わからない</span>
-                        </label>
-                    </div>
                 </div>
 
                 <div class="form-group">
@@ -971,38 +547,31 @@
                             <span class="radio-label">初めて</span>
                         </label>
                         <label class="radio-item">
-                            <input type="radio" name="lashPermExperience" value="1〜2回程度" data-toggle="lashPermDetails">
+                            <input type="radio" name="lashPermExperience" value="1〜2回" data-toggle="lashPermDetails">
                             <span class="radio-custom"></span>
-                            <span class="radio-label">1〜2回程度</span>
+                            <span class="radio-label">1〜2回</span>
                         </label>
                         <label class="radio-item">
-                            <input type="radio" name="lashPermExperience" value="定期的に通っている" data-toggle="lashPermDetails">
+                            <input type="radio" name="lashPermExperience" value="定期的" data-toggle="lashPermDetails">
                             <span class="radio-custom"></span>
-                            <span class="radio-label">定期的に通っている</span>
+                            <span class="radio-label">定期的</span>
                         </label>
                         <label class="radio-item">
-                            <input type="radio" name="lashPermExperience" value="以前通っていたが今は通っていない" data-toggle="lashPermDetails">
+                            <input type="radio" name="lashPermExperience" value="以前のみ" data-toggle="lashPermDetails">
                             <span class="radio-custom"></span>
-                            <span class="radio-label">以前通っていたが今は通っていない</span>
-                        </label>
-                        <label class="radio-item">
-                            <input type="radio" name="lashPermExperience" value="わからない・覚えていない">
-                            <span class="radio-custom"></span>
-                            <span class="radio-label">わからない・覚えていない</span>
+                            <span class="radio-label">以前のみ</span>
                         </label>
                     </div>
                 </div>
 
                 <div class="form-group conditional-field" id="lashPermDetails" style="display: none;">
-                    <label class="form-label">最後にまつ毛パーマをした時期</label>
+                    <label class="form-label">最後の施術時期</label>
                     <select name="lashPermLastTime" class="form-select">
                         <option value="">選択してください</option>
                         <option value="1ヶ月以内">1ヶ月以内</option>
                         <option value="1〜3ヶ月前">1〜3ヶ月前</option>
                         <option value="3ヶ月〜半年前">3ヶ月〜半年前</option>
-                        <option value="半年〜1年前">半年〜1年前</option>
-                        <option value="1年以上前">1年以上前</option>
-                        <option value="わからない・覚えていない">わからない・覚えていない</option>
+                        <option value="半年以上前">半年以上前</option>
                     </select>
                 </div>
 
@@ -1015,124 +584,65 @@
                             <span class="radio-label">初めて</span>
                         </label>
                         <label class="radio-item">
-                            <input type="radio" name="browSalonExperience" value="1〜2回程度">
+                            <input type="radio" name="browSalonExperience" value="1〜2回">
                             <span class="radio-custom"></span>
-                            <span class="radio-label">1〜2回程度</span>
+                            <span class="radio-label">1〜2回</span>
                         </label>
                         <label class="radio-item">
-                            <input type="radio" name="browSalonExperience" value="定期的に通っている">
+                            <input type="radio" name="browSalonExperience" value="定期的">
                             <span class="radio-custom"></span>
-                            <span class="radio-label">定期的に通っている</span>
+                            <span class="radio-label">定期的</span>
                         </label>
                         <label class="radio-item">
-                            <input type="radio" name="browSalonExperience" value="以前通っていたが今は通っていない">
+                            <input type="radio" name="browSalonExperience" value="以前のみ">
                             <span class="radio-custom"></span>
-                            <span class="radio-label">以前通っていたが今は通っていない</span>
-                        </label>
-                        <label class="radio-item">
-                            <input type="radio" name="browSalonExperience" value="わからない・覚えていない">
-                            <span class="radio-custom"></span>
-                            <span class="radio-label">わからない・覚えていない</span>
+                            <span class="radio-label">以前のみ</span>
                         </label>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label required">眉毛ワックス脱毛の経験</label>
-                    <div class="radio-group">
-                        <label class="radio-item">
-                            <input type="radio" name="browWaxExperience" value="初めて" required>
-                            <span class="radio-custom"></span>
-                            <span class="radio-label">初めて</span>
-                        </label>
-                        <label class="radio-item">
-                            <input type="radio" name="browWaxExperience" value="1〜2回程度" data-toggle="browWaxDetails">
-                            <span class="radio-custom"></span>
-                            <span class="radio-label">1〜2回程度</span>
-                        </label>
-                        <label class="radio-item">
-                            <input type="radio" name="browWaxExperience" value="定期的に受けている" data-toggle="browWaxDetails">
-                            <span class="radio-custom"></span>
-                            <span class="radio-label">定期的に受けている</span>
-                        </label>
-                        <label class="radio-item">
-                            <input type="radio" name="browWaxExperience" value="以前受けたことがあるが今は受けていない" data-toggle="browWaxDetails">
-                            <span class="radio-custom"></span>
-                            <span class="radio-label">以前受けたことがあるが今は受けていない</span>
-                        </label>
-                        <label class="radio-item">
-                            <input type="radio" name="browWaxExperience" value="わからない・覚えていない">
-                            <span class="radio-custom"></span>
-                            <span class="radio-label">わからない・覚えていない</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="form-group conditional-field" id="browWaxDetails" style="display: none;">
-                    <label class="form-label">最後に眉毛ワックスを受けた時期</label>
-                    <select name="browWaxLastTime" class="form-select">
-                        <option value="">選択してください</option>
-                        <option value="1ヶ月以内">1ヶ月以内</option>
-                        <option value="1〜3ヶ月前">1〜3ヶ月前</option>
-                        <option value="3ヶ月〜半年前">3ヶ月〜半年前</option>
-                        <option value="半年〜1年前">半年〜1年前</option>
-                        <option value="1年以上前">1年以上前</option>
-                        <option value="わからない・覚えていない">わからない・覚えていない</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label required">過去の施術で気になった点・トラブル（複数選択可）</label>
+                    <label class="form-label required">過去の施術トラブル（複数選択可）</label>
                     <div class="checkbox-group">
                         <label class="checkbox-item">
-                            <input type="checkbox" name="pastIssues" value="仕上がりがイメージと違った">
+                            <input type="checkbox" name="pastTroubles" value="かぶれ・赤み">
                             <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">仕上がりがイメージと違った</span>
+                            <span class="checkbox-label">かぶれ・赤み</span>
                         </label>
                         <label class="checkbox-item">
-                            <input type="checkbox" name="pastIssues" value="持ちが悪かった">
+                            <input type="checkbox" name="pastTroubles" value="腫れ">
                             <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">持ちが悪かった</span>
+                            <span class="checkbox-label">腫れ</span>
                         </label>
                         <label class="checkbox-item">
-                            <input type="checkbox" name="pastIssues" value="痛みがあった">
+                            <input type="checkbox" name="pastTroubles" value="かゆみ">
                             <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">痛みがあった</span>
+                            <span class="checkbox-label">かゆみ</span>
                         </label>
                         <label class="checkbox-item">
-                            <input type="checkbox" name="pastIssues" value="肌トラブルがあった">
+                            <input type="checkbox" name="pastTroubles" value="痛み">
                             <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">肌トラブルがあった</span>
+                            <span class="checkbox-label">痛み</span>
                         </label>
                         <label class="checkbox-item">
-                            <input type="checkbox" name="pastIssues" value="その他">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">その他</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="pastIssues" value="特になし">
+                            <input type="checkbox" name="pastTroubles" value="特になし">
                             <span class="checkbox-custom"></span>
                             <span class="checkbox-label">特になし</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="pastIssues" value="わからない・覚えていない">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">わからない・覚えていない</span>
                         </label>
                     </div>
                 </div>
 
                 <div class="button-group">
-                    <button type="button" class="btn btn-prev" data-prev="5">戻る</button>
-                    <button type="button" class="btn btn-next" data-next="7">次へ</button>
+                    <button type="button" class="btn btn-prev" data-prev="3">戻る</button>
+                    <button type="button" class="btn btn-next" data-next="5">次へ</button>
                 </div>
             </section>
 
-            <!-- Section 7: Preferences & Design -->
-            <section class="form-section" data-section="7">
+            <!-- Section 5: Preferences & Coupon (Combined) -->
+            <section class="form-section" data-section="5">
                 <div class="section-header">
-                    <span class="section-number">07</span>
-                    <h2 class="section-title">ご希望・デザインイメージ</h2>
+                    <span class="section-number">05</span>
+                    <h2 class="section-title">ご希望・クーポン</h2>
                 </div>
 
                 <div class="form-group">
@@ -1149,19 +659,14 @@
                             <span class="checkbox-label">まつ毛エクステ</span>
                         </label>
                         <label class="checkbox-item">
-                            <input type="checkbox" name="desiredMenu" value="眉毛スタイリング（ワックス脱毛含む）">
+                            <input type="checkbox" name="desiredMenu" value="眉毛スタイリング">
                             <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">眉毛スタイリング（ワックス脱毛含む）</span>
+                            <span class="checkbox-label">眉毛スタイリング</span>
                         </label>
                         <label class="checkbox-item">
-                            <input type="checkbox" name="desiredMenu" value="眉毛＋まつ毛のセットメニュー">
+                            <input type="checkbox" name="desiredMenu" value="セットメニュー">
                             <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">眉毛＋まつ毛のセットメニュー</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="desiredMenu" value="その他">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">その他</span>
+                            <span class="checkbox-label">セットメニュー</span>
                         </label>
                         <label class="checkbox-item">
                             <input type="checkbox" name="desiredMenu" value="相談して決めたい">
@@ -1173,82 +678,72 @@
 
                 <div class="form-group">
                     <label class="form-label required">まつ毛の仕上がりイメージ</label>
-                    <div class="radio-group image-radio-group">
-                        <label class="radio-item image-radio-item">
+                    <div class="radio-group">
+                        <label class="radio-item">
                             <input type="radio" name="lashStyle" value="ナチュラル" required>
                             <span class="radio-custom"></span>
                             <span class="radio-label">ナチュラル</span>
                         </label>
-                        <label class="radio-item image-radio-item">
-                            <input type="radio" name="lashStyle" value="華やか・ボリューム重視">
+                        <label class="radio-item">
+                            <input type="radio" name="lashStyle" value="華やか">
                             <span class="radio-custom"></span>
-                            <span class="radio-label">華やか・ボリューム重視</span>
+                            <span class="radio-label">華やか</span>
                         </label>
-                        <label class="radio-item image-radio-item">
+                        <label class="radio-item">
                             <input type="radio" name="lashStyle" value="目尻長め">
                             <span class="radio-custom"></span>
                             <span class="radio-label">目尻長め</span>
                         </label>
-                        <label class="radio-item image-radio-item">
-                            <input type="radio" name="lashStyle" value="ぱっちり・上向き重視">
+                        <label class="radio-item">
+                            <input type="radio" name="lashStyle" value="ぱっちり">
                             <span class="radio-custom"></span>
-                            <span class="radio-label">ぱっちり・上向き重視</span>
+                            <span class="radio-label">ぱっちり</span>
                         </label>
-                        <label class="radio-item image-radio-item">
-                            <input type="radio" name="lashStyle" value="キュート（中央長め）">
+                        <label class="radio-item">
+                            <input type="radio" name="lashStyle" value="キュート">
                             <span class="radio-custom"></span>
-                            <span class="radio-label">キュート（中央長め）</span>
+                            <span class="radio-label">キュート</span>
                         </label>
-                        <label class="radio-item image-radio-item">
+                        <label class="radio-item">
                             <input type="radio" name="lashStyle" value="お任せ">
                             <span class="radio-custom"></span>
                             <span class="radio-label">お任せ</span>
-                        </label>
-                        <label class="radio-item image-radio-item">
-                            <input type="radio" name="lashStyle" value="わからない・相談したい">
-                            <span class="radio-custom"></span>
-                            <span class="radio-label">わからない・相談したい</span>
                         </label>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label required">眉毛の仕上がりイメージ</label>
-                    <div class="radio-group image-radio-group">
-                        <label class="radio-item image-radio-item">
+                    <div class="radio-group">
+                        <label class="radio-item">
                             <input type="radio" name="browStyle" value="ナチュラル" required>
                             <span class="radio-custom"></span>
                             <span class="radio-label">ナチュラル</span>
                         </label>
-                        <label class="radio-item image-radio-item">
-                            <input type="radio" name="browStyle" value="きりっとシャープ">
+                        <label class="radio-item">
+                            <input type="radio" name="browStyle" value="シャープ">
                             <span class="radio-custom"></span>
-                            <span class="radio-label">きりっとシャープ</span>
+                            <span class="radio-label">シャープ</span>
                         </label>
-                        <label class="radio-item image-radio-item">
+                        <label class="radio-item">
                             <input type="radio" name="browStyle" value="アーチ型">
                             <span class="radio-custom"></span>
                             <span class="radio-label">アーチ型</span>
                         </label>
-                        <label class="radio-item image-radio-item">
+                        <label class="radio-item">
                             <input type="radio" name="browStyle" value="平行眉">
                             <span class="radio-custom"></span>
                             <span class="radio-label">平行眉</span>
                         </label>
-                        <label class="radio-item image-radio-item">
+                        <label class="radio-item">
                             <input type="radio" name="browStyle" value="韓国風">
                             <span class="radio-custom"></span>
                             <span class="radio-label">韓国風</span>
                         </label>
-                        <label class="radio-item image-radio-item">
+                        <label class="radio-item">
                             <input type="radio" name="browStyle" value="お任せ">
                             <span class="radio-custom"></span>
                             <span class="radio-label">お任せ</span>
-                        </label>
-                        <label class="radio-item image-radio-item">
-                            <input type="radio" name="browStyle" value="わからない・相談したい">
-                            <span class="radio-custom"></span>
-                            <span class="radio-label">わからない・相談したい</span>
                         </label>
                     </div>
                 </div>
@@ -1267,9 +762,9 @@
                             <span class="checkbox-label">デザイン性</span>
                         </label>
                         <label class="checkbox-item">
-                            <input type="checkbox" name="priorities" value="自まつ毛・自眉毛への負担軽減">
+                            <input type="checkbox" name="priorities" value="負担軽減">
                             <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">自まつ毛・自眉毛への負担軽減</span>
+                            <span class="checkbox-label">負担軽減</span>
                         </label>
                         <label class="checkbox-item">
                             <input type="checkbox" name="priorities" value="ナチュラルさ">
@@ -1277,87 +772,42 @@
                             <span class="checkbox-label">ナチュラルさ</span>
                         </label>
                         <label class="checkbox-item">
-                            <input type="checkbox" name="priorities" value="特にこだわりなし">
+                            <input type="checkbox" name="priorities" value="こだわりなし">
                             <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">特にこだわりなし</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="priorities" value="わからない">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">わからない</span>
+                            <span class="checkbox-label">こだわりなし</span>
                         </label>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label required">理想のイメージ写真</label>
-                    <div class="radio-group">
-                        <label class="radio-item">
-                            <input type="radio" name="referencePhoto" value="あり（スタッフにご提示ください）" required>
-                            <span class="radio-custom"></span>
-                            <span class="radio-label">あり（スタッフにご提示ください）</span>
-                        </label>
-                        <label class="radio-item">
-                            <input type="radio" name="referencePhoto" value="なし">
-                            <span class="radio-custom"></span>
-                            <span class="radio-label">なし</span>
-                        </label>
-                        <label class="radio-item">
-                            <input type="radio" name="referencePhoto" value="わからない・相談したい">
-                            <span class="radio-custom"></span>
-                            <span class="radio-label">わからない・相談したい</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label required">今後の来店ペースの希望</label>
+                    <label class="form-label required">今後の来店ペース</label>
                     <select name="visitFrequency" class="form-select" required>
                         <option value="">選択してください</option>
                         <option value="2〜3週間に1回">2〜3週間に1回</option>
                         <option value="月1回程度">月1回程度</option>
                         <option value="1〜2ヶ月に1回">1〜2ヶ月に1回</option>
                         <option value="不定期">不定期</option>
-                        <option value="今回のみ">今回のみ</option>
-                        <option value="わからない・相談したい">わからない・相談したい</option>
+                        <option value="相談したい">相談したい</option>
                     </select>
                 </div>
 
-                <div class="button-group">
-                    <button type="button" class="btn btn-prev" data-prev="6">戻る</button>
-                    <button type="button" class="btn btn-next" data-next="8">次へ</button>
-                </div>
-            </section>
-
-            <!-- Section 8: Coupon -->
-            <section class="form-section" data-section="8">
-                <div class="section-header">
-                    <span class="section-number">08</span>
-                    <h2 class="section-title">クーポン確認</h2>
-                </div>
-
                 <div class="form-group">
-                    <label class="form-label required">本日ご利用のクーポン種別</label>
+                    <label class="form-label required">本日ご利用のクーポン</label>
                     <div class="radio-group">
                         <label class="radio-item">
-                            <input type="radio" name="couponType" value="通常予約（クーポンなし）" required>
+                            <input type="radio" name="couponType" value="通常予約" required>
                             <span class="radio-custom"></span>
-                            <span class="radio-label">通常予約（クーポンなし）</span>
+                            <span class="radio-label">通常予約</span>
                         </label>
                         <label class="radio-item">
-                            <input type="radio" name="couponType" value="口コミ投稿必須クーポン" data-toggle="reviewConsent">
+                            <input type="radio" name="couponType" value="口コミクーポン" data-toggle="reviewConsent">
                             <span class="radio-custom"></span>
-                            <span class="radio-label">口コミ投稿必須クーポン</span>
+                            <span class="radio-label">口コミクーポン</span>
                         </label>
                         <label class="radio-item">
                             <input type="radio" name="couponType" value="その他クーポン" data-toggle="couponName">
                             <span class="radio-custom"></span>
                             <span class="radio-label">その他クーポン</span>
-                        </label>
-                        <label class="radio-item">
-                            <input type="radio" name="couponType" value="わからない">
-                            <span class="radio-custom"></span>
-                            <span class="radio-label">わからない</span>
                         </label>
                     </div>
                 </div>
@@ -1368,16 +818,16 @@
                 </div>
 
                 <div class="button-group">
-                    <button type="button" class="btn btn-prev" data-prev="7">戻る</button>
-                    <button type="button" class="btn btn-next" data-next="9">次へ</button>
+                    <button type="button" class="btn btn-prev" data-prev="4">戻る</button>
+                    <button type="button" class="btn btn-next" data-next="6">次へ</button>
                 </div>
             </section>
 
-            <!-- Section 9: Consent -->
-            <section class="form-section" data-section="9">
+            <!-- Section 6: Consent & Signature (Combined) -->
+            <section class="form-section" data-section="6">
                 <div class="section-header">
-                    <span class="section-number">09</span>
-                    <h2 class="section-title">同意・確認事項</h2>
+                    <span class="section-number">06</span>
+                    <h2 class="section-title">同意・署名</h2>
                 </div>
 
                 <div class="form-group">
@@ -1386,7 +836,7 @@
                         <label class="checkbox-item consent-item">
                             <input type="checkbox" name="treatmentConsent" value="施術内容・リスク理解" required>
                             <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">施術内容・リスクについての説明を受け理解しました</span>
+                            <span class="checkbox-label">施術内容・リスクについて理解しました</span>
                         </label>
                         <label class="checkbox-item consent-item">
                             <input type="checkbox" name="aftercareConsent" value="注意事項理解" required>
@@ -1396,7 +846,7 @@
                         <label class="checkbox-item consent-item">
                             <input type="checkbox" name="privacyConsent" value="個人情報同意" required>
                             <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">個人情報の取り扱いについて同意します</span>
+                            <span class="checkbox-label">個人情報の取り扱いに同意します</span>
                         </label>
                     </div>
                 </div>
@@ -1404,7 +854,7 @@
                 <div class="form-group">
                     <label class="form-label required">SNS掲載に関する同意</label>
                     <div class="info-box">
-                        <p>当店の公式Instagram等のSNSに掲載させていただく場合がございます。削除のご希望があれば速やかに対応いたします。</p>
+                        <p>当店の公式SNSに掲載させていただく場合がございます。</p>
                     </div>
                     <div class="radio-group">
                         <label class="radio-item highlight-item">
@@ -1412,13 +862,13 @@
                             <span class="radio-custom"></span>
                             <span class="radio-label">
                                 <span class="highlight-text">顔出しOK</span>
-                                <span class="discount-badge">本日500円OFF</span>
+                                <span class="discount-badge">500円OFF</span>
                             </span>
                         </label>
                         <label class="radio-item">
-                            <input type="radio" name="snsConsent" value="目元のみ（顔なし）ならOK">
+                            <input type="radio" name="snsConsent" value="目元のみOK">
                             <span class="radio-custom"></span>
-                            <span class="radio-label">目元のみ（顔なし）ならOK</span>
+                            <span class="radio-label">目元のみOK</span>
                         </label>
                         <label class="radio-item">
                             <input type="radio" name="snsConsent" value="掲載不可">
@@ -1437,25 +887,9 @@
                         <label class="checkbox-item consent-item">
                             <input type="checkbox" name="reviewConsentCheck" value="口コミ投稿同意">
                             <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">口コミ必須クーポンを利用するにあたり、以下の口コミ投稿を行うことに同意します<br>
-                                <span class="sub-text">・ホットペッパービューティーへの口コミ投稿</span><br>
-                                <span class="sub-text">・Googleマップ（Google口コミ）への口コミ投稿</span>
-                            </span>
+                            <span class="checkbox-label">口コミ投稿に同意します</span>
                         </label>
                     </div>
-                </div>
-
-                <div class="button-group">
-                    <button type="button" class="btn btn-prev" data-prev="8">戻る</button>
-                    <button type="button" class="btn btn-next" data-next="10">次へ</button>
-                </div>
-            </section>
-
-            <!-- Section 10: Signature -->
-            <section class="form-section" data-section="10">
-                <div class="section-header">
-                    <span class="section-number">10</span>
-                    <h2 class="section-title">署名・送信</h2>
                 </div>
 
                 <div class="form-group">
@@ -1473,7 +907,7 @@
                 </div>
 
                 <div class="button-group">
-                    <button type="button" class="btn btn-prev" data-prev="9">戻る</button>
+                    <button type="button" class="btn btn-prev" data-prev="5">戻る</button>
                     <button type="button" class="btn btn-submit" id="submitBtn">入力内容を確認する</button>
                 </div>
             </section>
@@ -1496,7 +930,7 @@
             </div>
         </div>
 
-        <!-- Success Modal -->
+        <!-- Success Modal (Hidden, replaced by Coupon Modal) -->
         <div class="modal" id="successModal">
             <div class="modal-content success-modal">
                 <div class="success-icon">
@@ -1506,6 +940,30 @@
                 </div>
                 <h3>送信完了</h3>
                 <p>問診票の送信が完了しました。<br>ご来店ありがとうございます。</p>
+            </div>
+        </div>
+
+        <!-- Coupon Modal -->
+        <div class="modal" id="couponModal">
+            <div class="modal-content coupon-modal">
+                <h3 style="color: var(--gold-dark); margin-bottom: 8px;">問診票のご入力ありがとうございます</h3>
+                <p style="font-size: 0.875rem; color: var(--medium-gray); margin-bottom: 16px;">
+                    入力いただいた内容はメールでお送りしました
+                </p>
+
+                <div class="coupon-container">
+                    <span class="coupon-badge">次回予約限定</span>
+                    <p class="coupon-title">全メニュー</p>
+                    <p class="coupon-discount">30<span>%OFF</span></p>
+                    <div class="coupon-code" id="couponCode">KATE30OFF</div>
+                    <p class="coupon-validity">有効期限：発行日より3ヶ月</p>
+                </div>
+
+                <div class="coupon-instruction">
+                    <p><strong>このクーポンをスクリーンショット</strong>して保存してください。<br>次回ご来店時にスタッフにご提示ください。</p>
+                </div>
+
+                <button type="button" class="btn-close-coupon" id="closeCouponBtn">閉じる</button>
             </div>
         </div>
 
