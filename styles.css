@@ -450,13 +450,130 @@ body {
 }
 
 .consent-box .consent-item {
-    background-color: transparent;
-    border: none;
-    padding: var(--spacing-sm) 0;
+    background-color: var(--white);
+    border: 2px solid #D0D0D0;
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-sm);
+    justify-content: flex-start;
+}
+
+.consent-box .consent-item:last-child {
+    margin-bottom: 0;
 }
 
 .consent-box .consent-item:hover {
-    background-color: transparent;
+    border-color: var(--gold-light);
+    background-color: #FDFCFA;
+}
+
+/* Show checkbox indicator in consent box */
+.consent-box .checkbox-custom {
+    display: flex !important;
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--gold-primary);
+    border-radius: var(--radius-sm);
+    background-color: var(--white);
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-right: var(--spacing-sm);
+}
+
+.consent-box .checkbox-custom::after {
+    content: '';
+    width: 6px;
+    height: 12px;
+    border: solid var(--white);
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg) scale(0);
+    transition: transform var(--transition-fast);
+    position: static;
+    top: auto;
+    left: auto;
+}
+
+.consent-box .consent-item input:checked + .checkbox-custom {
+    background-color: var(--gold-primary);
+    border-color: var(--gold-primary);
+}
+
+.consent-box .consent-item input:checked + .checkbox-custom::after {
+    transform: rotate(45deg) scale(1);
+}
+
+.consent-box .consent-item:has(input:checked) {
+    border-color: var(--gold-primary);
+    background-color: rgba(201, 168, 76, 0.05);
+    box-shadow: none;
+}
+
+.consent-box .checkbox-label {
+    font-size: 0.9375rem;
+    color: var(--dark-gray);
+    text-align: left;
+}
+
+.consent-description {
+    font-size: 0.875rem;
+    color: var(--gold-dark);
+    margin-bottom: var(--spacing-md);
+    font-weight: 500;
+}
+
+/* Review Choice Styling */
+.review-yes-item {
+    border-color: var(--gold-primary);
+    background: linear-gradient(135deg, rgba(201, 168, 76, 0.1) 0%, rgba(232, 217, 160, 0.1) 100%);
+    position: relative;
+}
+
+.review-yes-item .radio-label {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.review-yes-text {
+    font-weight: 600;
+    color: var(--gold-dark);
+}
+
+.review-discount-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    background: linear-gradient(135deg, #D64545 0%, #FF6B6B 100%);
+    color: var(--white);
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: var(--radius-full);
+    letter-spacing: 0.02em;
+    animation: badgePulse 2s ease-in-out infinite;
+}
+
+@keyframes badgePulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.review-yes-item:has(input:checked) {
+    background: var(--gold-gradient);
+}
+
+.review-yes-item:has(input:checked) .review-yes-text {
+    color: var(--white);
+}
+
+.review-yes-item:has(input:checked) .review-discount-badge {
+    background: var(--white);
+    color: var(--gold-dark);
 }
 
 /* Info Box */
@@ -823,8 +940,10 @@ body {
 /* Coupon Modal */
 .coupon-modal {
     text-align: center;
-    padding: var(--spacing-lg);
+    padding: var(--spacing-md);
     background: linear-gradient(135deg, #FFFEF5 0%, #FFF9E6 100%);
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 .coupon-container {
@@ -832,20 +951,20 @@ body {
     background: var(--white);
     border: 3px dashed var(--gold-primary);
     border-radius: var(--radius-lg);
-    padding: var(--spacing-xl);
+    padding: var(--spacing-lg);
     margin: var(--spacing-md) 0;
 }
 
 .coupon-badge {
     position: absolute;
-    top: -15px;
+    top: -12px;
     left: 50%;
     transform: translateX(-50%);
     background: var(--gold-gradient);
     color: var(--white);
-    padding: 8px 20px;
+    padding: 6px 16px;
     border-radius: var(--radius-full);
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     font-weight: 600;
     letter-spacing: 0.1em;
     white-space: nowrap;
@@ -853,59 +972,59 @@ body {
 
 .coupon-discount {
     font-family: var(--font-accent);
-    font-size: 4rem;
+    font-size: 3rem;
     font-weight: 600;
     color: var(--gold-dark);
     line-height: 1;
-    margin: var(--spacing-md) 0;
+    margin: var(--spacing-sm) 0;
 }
 
 .coupon-discount span {
-    font-size: 2rem;
+    font-size: 1.5rem;
 }
 
 .coupon-title {
-    font-size: 1.125rem;
+    font-size: 1rem;
     font-weight: 600;
     color: var(--black);
-    margin-bottom: var(--spacing-sm);
+    margin-bottom: var(--spacing-xs);
 }
 
 .coupon-description {
-    font-size: 0.875rem;
+    font-size: 0.8125rem;
     color: var(--medium-gray);
-    margin-bottom: var(--spacing-md);
+    margin-bottom: var(--spacing-sm);
 }
 
 .coupon-validity {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     color: var(--light-gray);
-    padding-top: var(--spacing-md);
+    padding-top: var(--spacing-sm);
     border-top: 1px solid var(--pale-gray);
 }
 
 .coupon-code {
     display: inline-block;
     background: var(--pale-gray);
-    padding: 8px 16px;
+    padding: 6px 12px;
     border-radius: var(--radius-sm);
     font-family: monospace;
-    font-size: 1rem;
+    font-size: 0.875rem;
     font-weight: 600;
     color: var(--gold-dark);
     letter-spacing: 0.1em;
-    margin: var(--spacing-sm) 0;
+    margin: var(--spacing-xs) 0;
 }
 
 .coupon-instruction {
     background: rgba(201, 168, 76, 0.1);
     border-radius: var(--radius-md);
-    padding: var(--spacing-md);
-    margin-top: var(--spacing-lg);
+    padding: var(--spacing-sm);
+    margin-top: var(--spacing-md);
 }
 
 .coupon-instruction p {
-    font-size: 0.875rem;
+    font-size: 0.8125rem;
     color: var(--medium-gray);
     margin: 0;
 }
@@ -915,13 +1034,13 @@ body {
 }
 
 .btn-close-coupon {
-    margin-top: var(--spacing-lg);
+    margin-top: var(--spacing-md);
     background: var(--gold-gradient);
     color: var(--white);
     border: none;
-    padding: 14px 32px;
+    padding: 12px 24px;
     border-radius: var(--radius-md);
-    font-size: 1rem;
+    font-size: 0.9375rem;
     font-weight: 500;
     cursor: pointer;
     transition: all var(--transition-fast);
@@ -930,6 +1049,104 @@ body {
 .btn-close-coupon:hover {
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(201, 168, 76, 0.4);
+}
+
+/* Coupon Modal Responsive */
+@media (max-height: 700px) {
+    .coupon-modal {
+        padding: var(--spacing-sm);
+    }
+
+    .coupon-container {
+        padding: var(--spacing-md);
+        margin: var(--spacing-sm) 0;
+    }
+
+    .coupon-discount {
+        font-size: 2.5rem;
+    }
+
+    .coupon-discount span {
+        font-size: 1.25rem;
+    }
+
+    .coupon-instruction {
+        padding: var(--spacing-xs);
+    }
+
+    .coupon-instruction p {
+        font-size: 0.75rem;
+    }
+}
+
+@media (max-width: 375px) {
+    .coupon-modal {
+        padding: var(--spacing-sm);
+    }
+
+    .coupon-discount {
+        font-size: 2.5rem;
+    }
+
+    .coupon-discount span {
+        font-size: 1.25rem;
+    }
+
+    .coupon-badge {
+        font-size: 0.625rem;
+        padding: 4px 12px;
+    }
+}
+
+/* Next Input Highlight */
+.form-group.next-input {
+    position: relative;
+    animation: pulseHighlight 2s ease-in-out infinite;
+}
+
+.form-group.next-input::before {
+    content: '▶';
+    position: absolute;
+    left: -20px;
+    top: 0;
+    color: var(--gold-primary);
+    font-size: 0.75rem;
+    animation: bounceRight 1s ease-in-out infinite;
+}
+
+@keyframes pulseHighlight {
+    0%, 100% {
+        background-color: transparent;
+    }
+    50% {
+        background-color: rgba(201, 168, 76, 0.08);
+    }
+}
+
+@keyframes bounceRight {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(5px);
+    }
+}
+
+/* Section Complete - Emphasize Next Button */
+.button-group.section-complete .btn-next,
+.button-group.section-complete .btn-submit {
+    animation: buttonPulse 1.5s ease-in-out infinite;
+    transform: scale(1.02);
+    box-shadow: 0 6px 20px rgba(201, 168, 76, 0.5);
+}
+
+@keyframes buttonPulse {
+    0%, 100% {
+        box-shadow: 0 6px 20px rgba(201, 168, 76, 0.5);
+    }
+    50% {
+        box-shadow: 0 8px 30px rgba(201, 168, 76, 0.7);
+    }
 }
 
 /* Print Styles */

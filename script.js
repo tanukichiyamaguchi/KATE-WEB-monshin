@@ -24,8 +24,6 @@ const CONFIG = {
 // ============================================
 
 let currentSection = 1;
-let signaturePad = null;
-let isDrawing = false;
 
 // ============================================
 // DOM Elements
@@ -36,9 +34,6 @@ const elements = {
     progressFill: document.getElementById('progressFill'),
     currentSectionText: document.getElementById('currentSection'),
     totalSectionsText: document.getElementById('totalSections'),
-    signatureCanvas: document.getElementById('signaturePad'),
-    signatureData: document.getElementById('signatureData'),
-    clearSignatureBtn: document.getElementById('clearSignature'),
     submitBtn: document.getElementById('submitBtn'),
     confirmationModal: document.getElementById('confirmationModal'),
     confirmationContent: document.getElementById('confirmationContent'),
@@ -60,11 +55,12 @@ document.addEventListener('DOMContentLoaded', function() {
     initializePhoneInput();
     initializeConditionalFields();
     initializeNavigationButtons();
-    initializeSignaturePad();
     initializeCurrentDate();
     initializeSubmitButton();
     initializeModalButtons();
     initializeAutoScroll();
+    initializeInputHighlight();
+    initializeSectionComplete();
     updateProgress();
 });
 
@@ -204,15 +200,17 @@ function initializeConditionalFields() {
         });
     });
 
-    // Special handling for coupon type -> review consent
-    const couponRadios = document.querySelectorAll('input[name="couponType"]');
-    couponRadios.forEach(radio => {
+    // Special handling for review choice -> show note
+    const reviewRadios = document.querySelectorAll('input[name="reviewChoice"]');
+    reviewRadios.forEach(radio => {
         radio.addEventListener('change', function() {
-            const reviewConsentField = document.getElementById('reviewConsent');
-            if (this.value === '口コミクーポン') {
-                reviewConsentField.style.display = 'block';
-            } else {
-                reviewConsentField.style.display = 'none';
+            const reviewNoteField = document.getElementById('reviewNote');
+            if (reviewNoteField) {
+                if (this.value === '口コミする') {
+                    reviewNoteField.style.display = 'block';
+                } else {
+                    reviewNoteField.style.display = 'none';
+                }
             }
         });
     });
@@ -265,8 +263,147 @@ function initializeAutoScroll() {
                     }, 150);
                 }
             }
+
+            // Update highlight after selection
+            setTimeout(() => {
+                updateInputHighlight();
+                checkSectionComplete();
+            }, 200);
         });
     });
+}
+
+// ============================================
+// Input Highlight (Next field to fill)
+// ============================================
+
+function initializeInputHighlight() {
+    // Add change listeners to all form inputs
+    document.querySelectorAll('input, select').forEach(input => {
+        input.addEventListener('change', function() {
+            setTimeout(() => {
+                updateInputHighlight();
+                checkSectionComplete();
+            }, 100);
+        });
+        input.addEventListener('input', function() {
+            setTimeout(() => {
+                updateInputHighlight();
+                checkSectionComplete();
+            }, 100);
+        });
+    });
+
+    // Initial highlight
+    setTimeout(updateInputHighlight, 500);
+}
+
+function updateInputHighlight() {
+    const section = document.querySelector(`.form-section[data-section="${currentSection}"]`);
+    if (!section) return;
+
+    // Remove all existing highlights
+    document.querySelectorAll('.form-group.next-input').forEach(group => {
+        group.classList.remove('next-input');
+    });
+
+    // Find the first unfilled required field
+    const formGroups = section.querySelectorAll('.form-group:not(.conditional-field), .form-group.conditional-field[style*="block"]');
+
+    for (const group of formGroups) {
+        if (group.classList.contains('button-group')) continue;
+
+        const isComplete = isFormGroupComplete(group);
+
+        if (!isComplete) {
+            group.classList.add('next-input');
+            break;
+        }
+    }
+}
+
+function isFormGroupComplete(group) {
+    // Check text inputs
+    const textInput = group.querySelector('input[type="text"][required], input[type="email"][required], input[type="tel"][required]');
+    if (textInput && !textInput.value.trim()) return false;
+
+    // Check selects
+    const selects = group.querySelectorAll('select[required]');
+    for (const select of selects) {
+        if (!select.value) return false;
+    }
+
+    // Check radio buttons
+    const radioName = group.querySelector('input[type="radio"][required]');
+    if (radioName) {
+        const checked = group.querySelector(`input[type="radio"][name="${radioName.name}"]:checked`);
+        if (!checked) return false;
+    }
+
+    // Check checkbox groups (at least one should be checked if it's a required group)
+    const checkboxes = group.querySelectorAll('input[type="checkbox"]');
+    if (checkboxes.length > 0) {
+        // Check if this is a consent box (all must be checked)
+        const consentBox = group.querySelector('.consent-box');
+        if (consentBox) {
+            const requiredCheckboxes = group.querySelectorAll('input[type="checkbox"][required]');
+            for (const cb of requiredCheckboxes) {
+                if (!cb.checked) return false;
+            }
+        } else {
+            // Regular checkbox group - at least one must be checked
+            const hasLabel = group.querySelector('.form-label.required');
+            if (hasLabel) {
+                const anyChecked = group.querySelector('input[type="checkbox"]:checked');
+                if (!anyChecked) return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+// ============================================
+// Section Complete Check (Button emphasis)
+// ============================================
+
+function initializeSectionComplete() {
+    // Initial check
+    setTimeout(checkSectionComplete, 500);
+}
+
+function checkSectionComplete() {
+    const section = document.querySelector(`.form-section[data-section="${currentSection}"]`);
+    if (!section) return;
+
+    const buttonGroup = section.querySelector('.button-group');
+    if (!buttonGroup) return;
+
+    // Check if all form groups are complete
+    const formGroups = section.querySelectorAll('.form-group:not(.conditional-field):not(.button-group)');
+    let allComplete = true;
+
+    for (const group of formGroups) {
+        if (!isFormGroupComplete(group)) {
+            allComplete = false;
+            break;
+        }
+    }
+
+    // Also check visible conditional fields
+    const visibleConditionalFields = section.querySelectorAll('.form-group.conditional-field[style*="block"]');
+    for (const group of visibleConditionalFields) {
+        if (!isFormGroupComplete(group)) {
+            allComplete = false;
+            break;
+        }
+    }
+
+    if (allComplete) {
+        buttonGroup.classList.add('section-complete');
+    } else {
+        buttonGroup.classList.remove('section-complete');
+    }
 }
 
 // ============================================
@@ -306,10 +443,11 @@ function navigateToSection(sectionNumber) {
     // Scroll to top
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    // Resize signature pad if on section 6 (now the last section with signature)
-    if (sectionNumber === 6 && signaturePad) {
-        setTimeout(resizeSignatureCanvas, 100);
-    }
+    // Update input highlight for new section
+    setTimeout(() => {
+        updateInputHighlight();
+        checkSectionComplete();
+    }, 100);
 }
 
 function updateProgress() {
@@ -385,22 +523,6 @@ function validateCurrentSection() {
                 isValid = false;
             }
         });
-
-        // Check review consent if coupon type is review required
-        const couponType = document.querySelector('input[name="couponType"]:checked');
-        if (couponType && couponType.value === '口コミクーポン') {
-            const reviewConsent = section.querySelector('input[name="reviewConsentCheck"]');
-            if (reviewConsent && !reviewConsent.checked) {
-                markFieldAsError(reviewConsent);
-                isValid = false;
-            }
-        }
-
-        // Validate signature
-        if (!elements.signatureData.value) {
-            alert('署名をご記入ください');
-            isValid = false;
-        }
     }
 
     // Validate email format
@@ -439,116 +561,6 @@ function markFieldAsError(input) {
     if (formGroup) {
         formGroup.classList.add('has-error');
     }
-}
-
-// ============================================
-// Signature Pad
-// ============================================
-
-function initializeSignaturePad() {
-    const canvas = elements.signatureCanvas;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
-
-    resizeSignatureCanvas();
-    window.addEventListener('resize', resizeSignatureCanvas);
-
-    // Mouse events
-    canvas.addEventListener('mousedown', startDrawing);
-    canvas.addEventListener('mousemove', draw);
-    canvas.addEventListener('mouseup', stopDrawing);
-    canvas.addEventListener('mouseout', stopDrawing);
-
-    // Touch events
-    canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
-    canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
-    canvas.addEventListener('touchend', stopDrawing);
-
-    // Clear button
-    elements.clearSignatureBtn.addEventListener('click', clearSignature);
-
-    signaturePad = { canvas, ctx };
-}
-
-function resizeSignatureCanvas() {
-    const canvas = elements.signatureCanvas;
-    if (!canvas) return;
-
-    const rect = canvas.getBoundingClientRect();
-    const dpr = window.devicePixelRatio || 1;
-
-    canvas.width = rect.width * dpr;
-    canvas.height = rect.height * dpr;
-
-    const ctx = canvas.getContext('2d');
-    ctx.scale(dpr, dpr);
-    ctx.strokeStyle = '#1A1A1A';
-    ctx.lineWidth = 2;
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-}
-
-function startDrawing(e) {
-    isDrawing = true;
-    const pos = getPointerPos(e);
-    signaturePad.ctx.beginPath();
-    signaturePad.ctx.moveTo(pos.x, pos.y);
-}
-
-function draw(e) {
-    if (!isDrawing) return;
-
-    const pos = getPointerPos(e);
-    signaturePad.ctx.lineTo(pos.x, pos.y);
-    signaturePad.ctx.stroke();
-}
-
-function stopDrawing() {
-    if (isDrawing) {
-        isDrawing = false;
-        saveSignature();
-    }
-}
-
-function handleTouchStart(e) {
-    e.preventDefault();
-    const touch = e.touches[0];
-    const mouseEvent = new MouseEvent('mousedown', {
-        clientX: touch.clientX,
-        clientY: touch.clientY
-    });
-    startDrawing(mouseEvent);
-}
-
-function handleTouchMove(e) {
-    e.preventDefault();
-    const touch = e.touches[0];
-    const mouseEvent = new MouseEvent('mousemove', {
-        clientX: touch.clientX,
-        clientY: touch.clientY
-    });
-    draw(mouseEvent);
-}
-
-function getPointerPos(e) {
-    const rect = elements.signatureCanvas.getBoundingClientRect();
-    return {
-        x: (e.clientX || e.pageX) - rect.left,
-        y: (e.clientY || e.pageY) - rect.top
-    };
-}
-
-function clearSignature() {
-    const canvas = elements.signatureCanvas;
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    elements.signatureData.value = '';
-}
-
-function saveSignature() {
-    const canvas = elements.signatureCanvas;
-    elements.signatureData.value = canvas.toDataURL('image/png');
 }
 
 // ============================================
@@ -707,15 +719,14 @@ function generateConfirmationHTML(data) {
             ]
         },
         {
-            title: 'ご希望・クーポン',
+            title: 'ご希望・口コミ',
             fields: [
                 { key: 'desiredMenu', label: '希望メニュー' },
                 { key: 'lashStyle', label: 'まつ毛イメージ' },
                 { key: 'browStyle', label: '眉毛イメージ' },
                 { key: 'priorities', label: '重視ポイント' },
                 { key: 'visitFrequency', label: '来店ペース' },
-                { key: 'couponType', label: 'クーポン種別' },
-                { key: 'couponName', label: 'クーポン名' }
+                { key: 'reviewChoice', label: '口コミ投稿' }
             ]
         },
         {
@@ -783,7 +794,7 @@ function generatePDF(formData) {
         { title: '来店経路・ライフスタイル', fields: ['howFound', 'visitReason', 'occupation', 'makeupFrequency', 'eyeMakeup', 'sleepPosition', 'oilCleansing'] },
         { title: '健康状態・目元の状態', fields: ['eyeClinic', 'allergies', 'skinCondition', 'pregnancy', 'contactLens', 'eyeSymptoms', 'lashCondition'] },
         { title: '施術歴', fields: ['lashExtExperience', 'lashPermExperience', 'browSalonExperience', 'pastTroubles'] },
-        { title: 'ご希望・クーポン', fields: ['desiredMenu', 'lashStyle', 'browStyle', 'priorities', 'visitFrequency', 'couponType'] },
+        { title: 'ご希望・口コミ', fields: ['desiredMenu', 'lashStyle', 'browStyle', 'priorities', 'visitFrequency', 'reviewChoice'] },
         { title: '同意事項', fields: ['snsConsent', 'treatmentConsent', 'aftercareConsent', 'privacyConsent'] }
     ];
 
@@ -796,7 +807,7 @@ function generatePDF(formData) {
         lashExtExperience: 'エクステ経験', lashPermExperience: 'パーマ経験', browSalonExperience: '眉サロン経験',
         pastTroubles: '過去のトラブル', desiredMenu: '希望メニュー', lashStyle: 'まつ毛イメージ',
         browStyle: '眉毛イメージ', priorities: '重視ポイント', visitFrequency: '来店ペース',
-        couponType: 'クーポン種別', snsConsent: 'SNS掲載', treatmentConsent: '施術同意',
+        reviewChoice: '口コミ投稿', snsConsent: 'SNS掲載', treatmentConsent: '施術同意',
         aftercareConsent: 'アフターケア同意', privacyConsent: '個人情報同意'
     };
 

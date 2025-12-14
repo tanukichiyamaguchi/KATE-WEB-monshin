@@ -638,11 +638,11 @@
                 </div>
             </section>
 
-            <!-- Section 5: Preferences & Coupon (Combined) -->
+            <!-- Section 5: Preferences & Review -->
             <section class="form-section" data-section="5">
                 <div class="section-header">
                     <span class="section-number">05</span>
-                    <h2 class="section-title">ご希望・クーポン</h2>
+                    <h2 class="section-title">ご希望・口コミ</h2>
                 </div>
 
                 <div class="form-group">
@@ -792,29 +792,31 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label required">本日ご利用のクーポン</label>
+                    <label class="form-label required">口コミ投稿について</label>
+                    <div class="info-box">
+                        <p>施術後に口コミ投稿していただける方には、<strong>当日500円OFF</strong>の特典がございます。</p>
+                    </div>
                     <div class="radio-group">
-                        <label class="radio-item">
-                            <input type="radio" name="couponType" value="通常予約" required>
+                        <label class="radio-item review-yes-item">
+                            <input type="radio" name="reviewChoice" value="口コミする" required>
                             <span class="radio-custom"></span>
-                            <span class="radio-label">通常予約</span>
+                            <span class="radio-label">
+                                <span class="review-yes-text">口コミする</span>
+                                <span class="review-discount-badge">当日500円OFF</span>
+                            </span>
                         </label>
                         <label class="radio-item">
-                            <input type="radio" name="couponType" value="口コミクーポン" data-toggle="reviewConsent">
+                            <input type="radio" name="reviewChoice" value="口コミしない">
                             <span class="radio-custom"></span>
-                            <span class="radio-label">口コミクーポン</span>
-                        </label>
-                        <label class="radio-item">
-                            <input type="radio" name="couponType" value="その他クーポン" data-toggle="couponName">
-                            <span class="radio-custom"></span>
-                            <span class="radio-label">その他クーポン</span>
+                            <span class="radio-label">口コミしない</span>
                         </label>
                     </div>
                 </div>
 
-                <div class="form-group conditional-field" id="couponName" style="display: none;">
-                    <label class="form-label">クーポン名</label>
-                    <input type="text" name="couponName" class="form-input" placeholder="クーポン名をご記入ください">
+                <div class="form-group conditional-field review-note" id="reviewNote" style="display: none;">
+                    <div class="info-box warning">
+                        <p>口コミは施術後1週間以内の投稿をお願いしております。Google MAPまたはHot Pepper Beautyへの投稿が対象となります。</p>
+                    </div>
                 </div>
 
                 <div class="button-group">
@@ -823,15 +825,16 @@
                 </div>
             </section>
 
-            <!-- Section 6: Consent & Signature (Combined) -->
+            <!-- Section 6: Consent -->
             <section class="form-section" data-section="6">
                 <div class="section-header">
                     <span class="section-number">06</span>
-                    <h2 class="section-title">同意・署名</h2>
+                    <h2 class="section-title">同意確認</h2>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label required">施術に関する同意</label>
+                    <p class="consent-description">以下の項目をご確認のうえ、チェックしてください。</p>
                     <div class="consent-box">
                         <label class="checkbox-item consent-item">
                             <input type="checkbox" name="treatmentConsent" value="施術内容・リスク理解" required>
@@ -878,32 +881,9 @@
                     </div>
                 </div>
 
-                <div class="form-group conditional-field" id="reviewConsent" style="display: none;">
-                    <label class="form-label required">口コミ投稿に関する同意</label>
-                    <div class="info-box warning">
-                        <p>口コミは施術後1週間以内の投稿をお願いしております。</p>
-                    </div>
-                    <div class="consent-box">
-                        <label class="checkbox-item consent-item">
-                            <input type="checkbox" name="reviewConsentCheck" value="口コミ投稿同意">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-label">口コミ投稿に同意します</span>
-                        </label>
-                    </div>
-                </div>
-
                 <div class="form-group">
                     <label class="form-label">日付</label>
                     <input type="text" name="date" class="form-input" id="currentDate" readonly>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label required">署名</label>
-                    <div class="signature-container">
-                        <canvas id="signaturePad" class="signature-pad"></canvas>
-                        <button type="button" class="btn btn-clear-signature" id="clearSignature">クリア</button>
-                    </div>
-                    <input type="hidden" name="signature" id="signatureData">
                 </div>
 
                 <div class="button-group">
