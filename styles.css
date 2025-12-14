@@ -1098,54 +1098,98 @@ body {
     }
 }
 
-/* Next Input Highlight */
+/* Next Input Highlight - Strong Emphasis */
 .form-group.next-input {
     position: relative;
-    animation: pulseHighlight 2s ease-in-out infinite;
+    animation: pulseHighlight 1.5s ease-in-out infinite;
+    background-color: rgba(201, 168, 76, 0.1);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+    margin-left: -16px;
+    margin-right: -16px;
+    padding-left: 16px;
+    padding-right: 16px;
+    border-left: 4px solid var(--gold-primary);
+    box-shadow: 0 0 20px rgba(201, 168, 76, 0.3);
 }
 
 .form-group.next-input::before {
-    content: '▶';
+    content: '▶ 入力してください';
     position: absolute;
-    left: -20px;
-    top: 0;
-    color: var(--gold-primary);
-    font-size: 0.75rem;
-    animation: bounceRight 1s ease-in-out infinite;
+    right: var(--spacing-sm);
+    top: var(--spacing-sm);
+    color: var(--white);
+    background: var(--gold-gradient);
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: var(--radius-full);
+    animation: bounceScale 1s ease-in-out infinite;
 }
 
 @keyframes pulseHighlight {
     0%, 100% {
-        background-color: transparent;
+        background-color: rgba(201, 168, 76, 0.1);
+        box-shadow: 0 0 20px rgba(201, 168, 76, 0.3);
     }
     50% {
-        background-color: rgba(201, 168, 76, 0.08);
+        background-color: rgba(201, 168, 76, 0.2);
+        box-shadow: 0 0 30px rgba(201, 168, 76, 0.5);
     }
 }
 
-@keyframes bounceRight {
+@keyframes bounceScale {
     0%, 100% {
-        transform: translateX(0);
+        transform: scale(1);
     }
     50% {
-        transform: translateX(5px);
+        transform: scale(1.05);
     }
 }
 
-/* Section Complete - Emphasize Next Button */
+/* Section Complete - Strong Button Emphasis */
 .button-group.section-complete .btn-next,
 .button-group.section-complete .btn-submit {
-    animation: buttonPulse 1.5s ease-in-out infinite;
-    transform: scale(1.02);
-    box-shadow: 0 6px 20px rgba(201, 168, 76, 0.5);
+    animation: buttonPulse 1s ease-in-out infinite;
+    transform: scale(1.08);
+    box-shadow: 0 8px 30px rgba(201, 168, 76, 0.6);
+    position: relative;
+}
+
+.button-group.section-complete .btn-next::before,
+.button-group.section-complete .btn-submit::before {
+    content: '✓ 入力完了！';
+    position: absolute;
+    top: -28px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, #4CAF50 0%, #81C784 100%);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: var(--radius-full);
+    white-space: nowrap;
+    animation: bounceDown 0.8s ease-in-out infinite;
 }
 
 @keyframes buttonPulse {
     0%, 100% {
-        box-shadow: 0 6px 20px rgba(201, 168, 76, 0.5);
+        box-shadow: 0 8px 30px rgba(201, 168, 76, 0.6);
+        transform: scale(1.08);
     }
     50% {
-        box-shadow: 0 8px 30px rgba(201, 168, 76, 0.7);
+        box-shadow: 0 12px 40px rgba(201, 168, 76, 0.8);
+        transform: scale(1.12);
+    }
+}
+
+@keyframes bounceDown {
+    0%, 100% {
+        transform: translateX(-50%) translateY(0);
+    }
+    50% {
+        transform: translateX(-50%) translateY(3px);
     }
 }
 
