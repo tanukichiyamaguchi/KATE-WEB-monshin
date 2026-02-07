@@ -9,8 +9,6 @@
 const SPREADSHEET_ID = '1jtexHAtYskILJC6aDk8IzJAdoiKE2YEDYzkyCYyV45M';
 const SHEET_NAME = '問診票データ';
 const SETTINGS_SHEET_NAME = '設定';
-const KARTE_PREFIX = 'KATE-';
-
 /**
  * POSTリクエストを処理
  */
@@ -59,8 +57,8 @@ function generateKarteNumber() {
   // カウンターを更新
   counterCell.setValue(currentNumber);
 
-  // KATE-0001 形式でカルテ番号を生成
-  return KARTE_PREFIX + String(currentNumber).padStart(4, '0');
+  // 0001 形式でカルテ番号を生成
+  return String(currentNumber).padStart(4, '0');
 }
 
 /**
